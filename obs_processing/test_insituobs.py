@@ -8,7 +8,7 @@ from seabird.cnv import fCNV
 import  matplotlib.pyplot as plt
 import os
 
-CTDDIR='IOCAS2012SPRING'
+CTDDIR='IOCAS2012AUTUMN'
 os.chdir('/Volumes/TO_1/roms4dvar_ecs/i4dvar_outputs/INSITU_OBS/%s/CTD/'%(CTDDIR))
 
 ctd_files = seapy.list_files('./*acfld.cnv')
@@ -126,7 +126,7 @@ for ctd_file in ctd_files:
                 or (((pres[start_down[downcast2_index+1]] - 
                   pres[start_up[downcast2_index]]) > np.max(pres) *0.2) \
                 and ((time[start_up[downcast_index]] -
-                  time[start_down[downcast2_index+1]]) <np.max(time)*0.05)):
+                  time[start_down[downcast2_index+1]]) <np.max(time)*0.05)): # judge that the interval between two downcast is small enough
             time_downcast = np.r_[
                                   time[start_up[downcast2_index]:start_down[downcast2_index+1]],
                                   time[start_up[downcast_index]:start_down[downcast_index+1]]
@@ -236,9 +236,11 @@ for ctd_file in ctd_files:
     plt.ylabel('PRES')
     plt.title('%s'%(ctd_file[2:-9]))
     #plt.show()
-    plt.savefig('../fig_downcast_detection/%s_%sdowncast_detection.jpeg'%(ctd_file[2:-4],VAR), dpi=400)
+    #plt.savefig('../fig_downcast_detection/%s_%sdowncast_detection.jpeg'%(ctd_file[2:-4],VAR), dpi=400)
     plt.close()
-    pres_intp = np.arange(np.ceil(np.min(pres_downcast)), np.floor(np.max(pres_downcast)))
+    # we want cut the tail of downcast off since there are non-downcast data at the end due to the algorithm
+    data_len = np.floor(0.95*len(pres_downcast))
+    pres_intp = np.arange(np.ceil(np.min(pres_downcast)), np.floor(np.max(pres_downcast[:int(data_len)]))+1) # per meter
     temp_intp = np.interp(pres_intp,pres_downcast,temp_downcast)
     plt.plot(temp_downcast,pres_downcast,'k', label = 'Raw')
     plt.plot(temp_intp, pres_intp,'r',label='Bin Averaged')
