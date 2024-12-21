@@ -22,14 +22,17 @@ fs = 1/(dt)
 Nf = fs/2
 Cf = fs/1500
 M = 100
-VAR = 'PSAL2'
+VAR = 'TEMP'
 for ctd_file in ctd_files:
     print(ctd_file)
     profile = fCNV(ctd_file)
     invalid =np.ma.getmaskarray(profile['flag'])
     time = profile['timeS'][:]
     #temp = profile[VAR][:]
-    temp = profile.data[-6].data
+    if VAR == 'PSAL2':
+        temp = profile.data[-6].data
+    else:
+        temp = profile[VAR][:]
     pres = profile['PRES'][:]
     # smooth the noise further
     pres_conv = np.convolve(pres,np.ones(24*6)/24/6,mode='full')[72:-71]
