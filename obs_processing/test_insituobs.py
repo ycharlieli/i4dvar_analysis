@@ -33,7 +33,7 @@ for ctd_file in ctd_files:
     pres = profile['PRES'][:]
     # smooth the noise further
     pres_conv = np.convolve(pres,np.ones(24*6)/24/6,mode='full')[72:-71]
-    pres_conv = seapy.filt.bandpass(pres_conv,dt,low_cutoff=dt*500,order=7)
+    pres_conv = seapy.filt.bandpass(pres_conv,dt,low_cutoff=dt*200,order=8)
     diff_pres = np.diff(pres_conv)
 #    diff_pres_conv = np.convolve(diff_pres,np.ones(24*6)/24/6,mode='full')[72:-71]
     diff_pres_conv = diff_pres.copy()
