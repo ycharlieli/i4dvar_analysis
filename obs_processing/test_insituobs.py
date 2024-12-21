@@ -33,7 +33,7 @@ for ctd_file in ctd_files:
     pres = profile['PRES'][:]
     # smooth the noise further
     pres_conv = np.convolve(pres,np.ones(24*6)/24/6,mode='full')[72:-71]
-    pres_conv = seapy.filt.bandpass(pres_conv,dt,low_cutoff=dt*300,order=7)
+    pres_conv = seapy.filt.bandpass(pres_conv,dt,low_cutoff=dt*100,order=7)
     diff_pres = np.diff(pres_conv)
 #    diff_pres_conv = np.convolve(diff_pres,np.ones(24*6)/24/6,mode='full')[72:-71]
     diff_pres_conv = diff_pres.copy()
@@ -226,7 +226,7 @@ for ctd_file in ctd_files:
     
     plt.plot(time, pres,'b')
     plt.plot(time,pres_conv,'k--')
-    plt.plot(time_downcast[~invalid_downcast],pres_downcast[~invalid_downcast],'r')
+    plt.plot(time_downcast,pres_downcast,'r')
     plt.plot(time[start_up],pres[start_up],'r.')
     plt.plot(time[start_down],pres[start_down],'g.')
     plt.xlabel('TIME')
@@ -237,7 +237,7 @@ for ctd_file in ctd_files:
     plt.close()
     pres_intp = np.arange(np.ceil(np.min(pres_downcast)), np.floor(np.max(pres_downcast)))
     temp_intp = np.interp(pres_intp,pres_downcast,temp_downcast)
-    plt.plot(temp_downcast[~invalid_downcast],pres_downcast[~invalid_downcast],'k', label = 'Raw')
+    plt.plot(temp_downcast,pres_downcast,'k', label = 'Raw')
     plt.plot(temp_intp, pres_intp,'r',label='Bin Averaged')
     plt.gca().invert_yaxis()
     plt.legend()
