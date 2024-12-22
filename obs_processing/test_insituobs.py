@@ -128,7 +128,7 @@ for ctd_file in ctd_files:
                 and ((time[start_up[downcast_index]] -
                   time[start_down[downcast2_index+1]]) <np.max(time)*0.05))\
                 or((time[start_up[downcast_index]] -
-                  time[start_down[downcast2_index+1]]) <np.max(time)*0.005)): # judge that the interval between two downcast is small enough
+                  time[start_down[downcast2_index+1]]) <np.max(time)*0.0005)): # judge that the interval between two downcast is small enough
             time_downcast = np.r_[
                                   time[start_up[downcast2_index]:start_down[downcast2_index+1]],
                                   time[start_up[downcast_index]:start_down[downcast_index+1]]
@@ -202,7 +202,7 @@ for ctd_file in ctd_files:
                 and ((time[start_up[downcast_index]] -
                   time[start_down[downcast2_index]]) <np.max(time)*0.05))\
                 or((time[start_up[downcast_index]] -
-                  time[start_down[downcast2_index+1]]) <np.max(time)*0.005)): # judge that the interval between two downcast is small enough
+                  time[start_down[downcast2_index]]) <np.max(time)*0.0005)): # judge that the interval between two downcast is small enough
             time_downcast = np.r_[
                                   time[start_up[downcast2_index]:start_down[downcast2_index]],
                                   time[start_up[downcast_index]:start_down[downcast_index]]
