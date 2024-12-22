@@ -22,7 +22,7 @@ fs = 1/(dt)
 Nf = fs/2
 Cf = fs/1500
 M = 100
-VAR = 'PSAL2'
+VAR = 'TEMP'
 for ctd_file in ctd_files:
     print(ctd_file)
     profile = fCNV(ctd_file)
@@ -240,7 +240,7 @@ for ctd_file in ctd_files:
     plt.ylabel('PRES')
     plt.title('%s'%(ctd_file[2:-9]))
     #plt.show()
-    plt.savefig('../fig_downcast_detection/%s_%sdowncast_detection.jpeg'%(ctd_file[2:-4],VAR), dpi=400)
+#    plt.savefig('../fig_downcast_detection/%s_%sdowncast_detection.jpeg'%(ctd_file[2:-4],VAR), dpi=400)
     plt.close()
     # we want cut the tail of downcast off since there are non-downcast data at the end due to the algorithm
     data_len = np.floor(0.95*len(pres_downcast))
