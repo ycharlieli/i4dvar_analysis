@@ -8,7 +8,7 @@ from seabird.cnv import fCNV
 import  matplotlib.pyplot as plt
 import os
 
-CTDDIR='NSFC2012SPRING-YS'
+CTDDIR='NSFC2012SPRING-ES'
 os.chdir('/Volumes/TO_1/roms4dvar_ecs/i4dvar_outputs/INSITU_OBS/%s/CTD/'%(CTDDIR))
 
 ctd_files = seapy.list_files('./*acfld.cnv')
@@ -22,7 +22,7 @@ fs = 1/(dt)
 Nf = fs/2
 Cf = fs/1500
 M = 100
-VAR = 'PSAL'
+VAR = 'PSAL2'
 for ctd_file in ctd_files:
     print(ctd_file)
     profile = fCNV(ctd_file)
@@ -119,14 +119,16 @@ for ctd_file in ctd_files:
                                    invalid[start_up[downcast2_index]:start_down[downcast2_index+1]]
                                 ]
         elif (downcast2_index < downcast_index)\
-            and (((pres[start_down[downcast2_index+1]] - 
+            and ((((pres[start_down[downcast2_index+1]] - 
                   pres[start_up[downcast2_index]]) > np.max(pres) *0.4) \
                 and ((time[start_up[downcast_index]] -
                   time[start_down[downcast2_index+1]]) <np.max(time)*0.1))\
                 or (((pres[start_down[downcast2_index+1]] - 
                   pres[start_up[downcast2_index]]) > np.max(pres) *0.2) \
                 and ((time[start_up[downcast_index]] -
-                  time[start_down[downcast2_index+1]]) <np.max(time)*0.05)): # judge that the interval between two downcast is small enough
+                  time[start_down[downcast2_index+1]]) <np.max(time)*0.05))\
+                or((time[start_up[downcast_index]] -
+                  time[start_down[downcast2_index+1]]) <np.max(time)*0.005)): # judge that the interval between two downcast is small enough
             time_downcast = np.r_[
                                   time[start_up[downcast2_index]:start_down[downcast2_index+1]],
                                   time[start_up[downcast_index]:start_down[downcast_index+1]]
@@ -191,14 +193,16 @@ for ctd_file in ctd_files:
                                    invalid[start_up[downcast2_index]:start_down[downcast2_index]]
                                 ]
         elif (downcast2_index < downcast_index)\
-            and (((pres[start_down[downcast2_index]] - 
+            and ((((pres[start_down[downcast2_index]] - 
                   pres[start_up[downcast2_index]]) > np.max(pres)*0.4) \
                 and ((time[start_up[downcast_index]] -
                   time[start_down[downcast2_index]]) <np.max(time)*0.1))\
               or (((pres[start_down[downcast2_index]] - 
                   pres[start_up[downcast2_index]]) > np.max(pres)*0.2) \
                 and ((time[start_up[downcast_index]] -
-                  time[start_down[downcast2_index]]) <np.max(time)*0.05)) :
+                  time[start_down[downcast2_index]]) <np.max(time)*0.05))\
+                or((time[start_up[downcast_index]] -
+                  time[start_down[downcast2_index+1]]) <np.max(time)*0.005)): # judge that the interval between two downcast is small enough
             time_downcast = np.r_[
                                   time[start_up[downcast2_index]:start_down[downcast2_index]],
                                   time[start_up[downcast_index]:start_down[downcast_index]]
@@ -236,7 +240,7 @@ for ctd_file in ctd_files:
     plt.ylabel('PRES')
     plt.title('%s'%(ctd_file[2:-9]))
     #plt.show()
-    #plt.savefig('../fig_downcast_detection/%s_%sdowncast_detection.jpeg'%(ctd_file[2:-4],VAR), dpi=400)
+    plt.savefig('../fig_downcast_detection/%s_%sdowncast_detection.jpeg'%(ctd_file[2:-4],VAR), dpi=400)
     plt.close()
     # we want cut the tail of downcast off since there are non-downcast data at the end due to the algorithm
     data_len = np.floor(0.95*len(pres_downcast))
