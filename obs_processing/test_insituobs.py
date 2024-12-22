@@ -8,7 +8,7 @@ from seabird.cnv import fCNV
 import  matplotlib.pyplot as plt
 import os
 
-CTDDIR='IOCAS2012AUTUMN'
+CTDDIR='NSFC2012SPRING-YS'
 os.chdir('/Volumes/TO_1/roms4dvar_ecs/i4dvar_outputs/INSITU_OBS/%s/CTD/'%(CTDDIR))
 
 ctd_files = seapy.list_files('./*acfld.cnv')
@@ -22,7 +22,7 @@ fs = 1/(dt)
 Nf = fs/2
 Cf = fs/1500
 M = 100
-VAR = 'TEMP'
+VAR = 'PSAL'
 for ctd_file in ctd_files:
     print(ctd_file)
     profile = fCNV(ctd_file)
