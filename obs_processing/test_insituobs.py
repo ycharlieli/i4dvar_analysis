@@ -8,7 +8,7 @@ from seabird.cnv import fCNV
 import  matplotlib.pyplot as plt
 import os
 
-CTDDIR='NSFC2012SPRING-ES'
+CTDDIR='IOCAS2012SPRING'
 os.chdir('/Volumes/TO_1/roms4dvar_ecs/i4dvar_outputs/INSITU_OBS/%s/CTD/'%(CTDDIR))
 
 ctd_files = seapy.list_files('./*acfld.cnv')
